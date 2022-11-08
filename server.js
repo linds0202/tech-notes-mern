@@ -26,7 +26,11 @@ app.use(cookieParser())
 
 app.use('/', express.static(path.join(__dirname, 'public')))
 
+//routes
 app.use('/', require('./routes/root'))
+app.use('/users', require('./routes/userRoutes'))
+app.use('/notes', require('./routes/noteRoutes'))
+
 
 //all routes that don't exist - display error page
 app.all('*', (req, res) => {
