@@ -1,6 +1,5 @@
 require('dotenv').config()
 const express = require('express')
-const { dirname } = require('path')
 const app = express()
 const path = require('path')
 const { logger, logEvents } = require('./middleware/logger')
@@ -26,19 +25,16 @@ app.use(cookieParser())
 
 app.use('/', express.static(path.join(__dirname, 'public')))
 
-//routes
 app.use('/', require('./routes/root'))
 app.use('/users', require('./routes/userRoutes'))
 app.use('/notes', require('./routes/noteRoutes'))
 
-
-//all routes that don't exist - display error page
 app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
         res.sendFile(path.join(__dirname, 'views', '404.html'))
     } else if (req.accepts('json')) {
-        res.json({ message: '404 Not Found'})
+        res.json({ message: '404 Not Found' })
     } else {
         res.type('txt').send('404 Not Found')
     }
@@ -47,7 +43,7 @@ app.all('*', (req, res) => {
 app.use(errorHandler)
 
 mongoose.connection.once('open', () => {
-    console.log('Connected to mongoDB')
+    console.log('Connected to MongoDB')
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
 })
 
